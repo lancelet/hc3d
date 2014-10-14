@@ -1,0 +1,40 @@
+name:                hc3d
+version:             0.1.0.0
+synopsis:            C3D file reader in Haskell
+description:         Please see README.md
+homepage:            http://github.com/lancelet/hc3d
+license:             BSD3
+license-file:        LICENSE
+author:              Jonathan Merritt
+maintainer:          j.s.merritt@gmail.com
+copyright:           2016 Jonathan Merritt
+category:            Data
+build-type:          Simple
+cabal-version:       >= 1.10
+
+library
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  exposed-modules:     Lib
+  build-depends:       base >= 4.7 && < 5
+
+executable hc3d
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , hc3d
+
+test-suite hc3d-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+  build-depends:       base
+                     , hc3d
+
+source-repository head
+  type:     git
+  location: https://github.com/lancelet/hc3d.git
