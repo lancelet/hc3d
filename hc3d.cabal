@@ -17,6 +17,7 @@ library
   default-language:    Haskell2010
   exposed-modules:     Lib
   build-depends:       base >= 4.7 && < 5
+                     , cereal
 
 executable hc3d
   hs-source-dirs:      app
