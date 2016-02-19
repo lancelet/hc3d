@@ -40,6 +40,9 @@ test-suite hc3d-test
   default-language:    Haskell2010
   build-depends:       base
                      , hc3d
+                     , tasty
+                     , tasty-hunit
+                     , tasty-quickcheck
 
 source-repository head
   type:     git
