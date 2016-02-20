@@ -16,6 +16,7 @@ library
   hs-source-dirs:      src
   default-language:    Haskell2010
   exposed-modules:     Lib
+                     , Data.HC3D.HexUtil
                      , Data.HC3D.Parse
                      , Data.HC3D.Types
   build-depends:       base >= 4.7 && < 5
@@ -23,6 +24,8 @@ library
                      , bytestring
                      , cereal
                      , fixed-vector
+                     , formatting
+                     , text
                      , vector
 
 executable hc3d
