@@ -58,20 +58,18 @@ data CmdOptions = CmdOptions
 cmdOptionsParser :: Parser CmdOptions
 cmdOptionsParser = CmdOptions
     <$> argument str (metavar "FILE")
-    <*> option auto
+    <*> optional (option auto
         (  long "skip"
         <> short 's'
-        <> value Nothing
         <> metavar "offset"
         <> help "Skip this many bytes from the beginning of the input."
-        )
-    <*> option auto
+        ))
+    <*> optional (option auto
         (  long "take"
         <> short 'n'
-        <> value Nothing
         <> metavar "length"
         <> help "Interpret only this many bytes of input."
-        )
+        ))
     <*> switch
         (  long "hexdump"
         <> help "Export in hexdump canonical format rather than as Haskell."
