@@ -79,5 +79,5 @@ fetchc3d sample01.zip
 
 # extract parts from the files that we need
 echo "Extracting parts from files"
-bindump Eb015pr.c3d Eb015pr_header.hs 0 256
+bindump Eb015pr.c3d Eb015pr_header.hs 0 512
 

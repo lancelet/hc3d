@@ -20,10 +20,10 @@ data Hdr = Hdr
     , labelRangeBlock :: {-# UNPACK #-} !Word16
     , charLabels4     :: {-# UNPACK #-} !Word16
     , nEvents         :: {-# UNPACK #-} !Word16
-    , _res2           :: {-# UNPACK #-} !Word8
+    , _res2           :: {-# UNPACK #-} !Word16
     , eventTimes      :: {-# UNPACK #-} !B.ByteString
     , eventDisplay    :: {-# UNPACK #-} !B.ByteString
-    , _res3           :: {-# UNPACK #-} !Word8
+    , _res3           :: {-# UNPACK #-} !Word16
     , eventLabels     :: {-# UNPACK #-} !B.ByteString
     , _res4           :: {-# UNPACK #-} !B.ByteString
     }

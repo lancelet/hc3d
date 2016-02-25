@@ -22,17 +22,17 @@ instance Serialize Hdr where
         dataStart       <- getWord16le
         nAnalogPerFrame <- getWord16le
         frameRate3D     <- getFloat32le
-        _res1           <- getBytes (147-13)
+        _res1           <- getBytes ((147-13+1)*2)
         labelAndRange   <- getWord16le
         labelRangeBlock <- getWord16le
         charLabels4     <- getWord16le
         nEvents         <- getWord16le
-        _res2           <- getWord8
-        eventTimes      <- getBytes (188-153)
-        eventDisplay    <- getBytes (197-189)
-        _res3           <- getWord8
-        eventLabels     <- getBytes (234-199)
-        _res4           <- getBytes (256-235)
+        _res2           <- getWord16le
+        eventTimes      <- getBytes ((188-153+1)*2)
+        eventDisplay    <- getBytes ((197-189+1)*2)
+        _res3           <- getWord16le
+        eventLabels     <- getBytes ((234-199+1)*2)
+        _res4           <- getBytes ((256-235+1)*2)
         pure Hdr{..}
 
     put Hdr{..} = do
@@ -51,10 +51,10 @@ instance Serialize Hdr where
         putWord16le   labelAndRange
         putWord16le   labelRangeBlock
         putWord16le   nEvents
-        putWord8      _res2
+        putWord16le   _res2
         putByteString eventTimes
         putByteString eventDisplay
-        putWord8     _res3
+        putWord16le   _res3
         putByteString eventLabels
         putByteString _res4
 
