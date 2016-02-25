@@ -10,24 +10,50 @@ import Data.HC3D.Types (Hdr(..))
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as B
 import qualified Data.Serialize as DS
+import qualified Data.Serialize.IEEE754 as DS
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (assertEqual, testCase)
+
 
 suite :: TestTree
 suite = testGroup "Parse Test Suite"
     [ testAdHocHeaderGet
     ]
 
+
 testAdHocHeaderGet =
   let
     e :: (Eq a, Show a) => String -> a -> a -> IO ()
     e = assertEqual
+
+    nullTime :: ByteString
+    nullTime = DS.runPut $ do
+        DS.putWord32le 0x00000000
+
+    times :: ByteString
+    times = DS.runPut $ do
+        DS.putFloat32le 2.72
+        DS.putFloat32le 5.4
+        DS.putFloat32le 7.32
+        DS.putByteString (B.concat $ replicate 15 nullTime)
+
+    noDisplay :: ByteString
+    noDisplay = DS.runPut $ do
+        DS.putWord8 0x00
+
+    display :: ByteString
+    display = DS.runPut $ do
+        DS.putWord8 0x01
+        DS.putWord8 0x01
+        DS.putWord8 0x01
+        DS.putByteString (B.concat $ replicate 15 noDisplay)
 
     nullLabel :: ByteString
     nullLabel = B.pack $ replicate 4 0x00
 
     labels :: ByteString
     labels = B.append "RIC RHS RTO " (B.concat $ replicate 15 nullLabel)
+
   in
     testCase "decode header (ad hoc)" $ do
         bs  <- hexBlockIO eb015prHeader
@@ -47,18 +73,23 @@ testAdHocHeaderGet =
         _   <- e "labelRangeBlock" 0              $ labelRangeBlock hdr
         _   <- e "charLabels4"     12345          $ charLabels4 hdr
         _   <- e "nEvents"         3              $ nEvents hdr
-        -- _   <- e "eventTimes"
-        -- _   <- e "eventDisplay"
+        _   <- e "eventTimes"      times          $ eventTimes hdr
+        _   <- e "eventDisplay"    display        $ eventDisplay hdr
         _   <- e "eventLabels"     labels         $ eventLabels hdr
         return ()
 
+
 ------------------------------------------------------------------------------
--- HEX BLOBS
+-- HEX BLOCKS
 ------------------------------------------------------------------------------
 
+
+-- | HexBlockIO is suitable for HUnit tests which happen in IO.
 hexBlockIO :: HexBlock -> IO ByteString
 hexBlockIO = maybe (fail "could not decode HexBlock") pure . HU.decode
 
+
+-- | Header block (512 bytes) from Eb015pr.c3d.
 eb015prHeader :: HexBlock
 eb015prHeader = 
     HexBlock 
