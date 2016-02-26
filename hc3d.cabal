@@ -16,6 +16,7 @@ library
   hs-source-dirs:      src
   default-language:    Haskell2010
   exposed-modules:     Lib
+                     , Data.HC3D.Binary
                      , Data.HC3D.HexUtil
                      , Data.HC3D.Parse
                      , Data.HC3D.Types
